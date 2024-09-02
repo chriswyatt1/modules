@@ -26,6 +26,19 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Merge master into the feature branch
+        run: git merge origin/master
+
   pre-commit:
     runs-on: ubuntu-latest
     steps:
