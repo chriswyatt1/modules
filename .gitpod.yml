@@ -1,4 +1,4 @@
-image: nfcore/gitpod:dev
+image: nfcore/gitpod:latest
 tasks:
   - name: unset JAVA_TOOL_OPTIONS
     command: |
