@@ -1,0 +1,67 @@
+name: "rattle_correct"
+description: Reference-free reconstruction and quantification of transcriptomes from
+  long-read sequencing
+keywords:
+  - transcriptomes
+  - correct
+  - nanopore
+tools:
+  - "rattle":
+      description: "Reference-free reconstruction and quantification of transcriptomes
+        from long-read sequencing"
+      homepage: "https://github.com/comprna/RATTLE"
+      documentation: "https://github.com/comprna/RATTLE"
+      tool_dev_url: "https://github.com/comprna/RATTLE"
+      doi: "10.1186/s13059-022-02715-w"
+      licence: ["GPL-3.0"]
+      identifier: biotools:rattle
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', suffix:'bacteria' ]`
+    - reads:
+        type: file
+        description: Input file in FASTA/FASTQ format.
+        pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+output:
+  - corrected:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', suffix:'bacteria' ]
+    - "corrected.fq":
+          type: file
+          description: Corrected fastq file
+          pattern: "corrected.fq"
+  - uncorrected:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', suffix:'bacteria' ]
+    - "uncorrected.fq":
+          type: file
+          description: Uncorrected fastq file
+          pattern: "uncorrected.fq"
+  - consensi:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', suffix:'bacteria' ]
+    - "consensi.fq":
+          type: file
+          description: One consensus sequence per transcript cluster
+          pattern: "corrected.fq"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@chriswyatt1"
+maintainers:
+  - "@chriswyatt1"
