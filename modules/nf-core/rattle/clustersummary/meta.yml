@@ -1,0 +1,56 @@
+name: "rattle_clustersummary"
+description: Reference-free reconstruction and quantification of transcriptomes from
+  long-read sequencing
+keywords:
+  - transcriptomes
+  - summary
+  - nanopore
+tools:
+  - "rattle":
+      description: "Reference-free reconstruction and quantification of transcriptomes
+        from long-read sequencing"
+      homepage: "https://github.com/comprna/RATTLE"
+      documentation: "https://github.com/comprna/RATTLE"
+      tool_dev_url: "https://github.com/comprna/RATTLE"
+      doi: "10.1186/s13059-022-02715-w"
+      licence: ["GPL-3.0"]
+      identifier: biotools:rattle
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', suffix:'bacteria' ]`
+    - reads:
+        type: file
+        description: Input file in FASTA/FASTQ format.
+        pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', suffix:'bacteria' ]`
+    - clusters:
+        type: file
+        description: Input clusters from rattle.
+        pattern: "clusters.out"
+output:
+  - summary:
+    - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', suffix:'bacteria' ]
+    - "cluster_summary_${meta}.csv":
+          type: file
+          description: Output clusters in binary format.
+          pattern: "cluster.out"
+  - versions:
+      - versions.yml:
+          type: file
+          description: File containing software versions
+          pattern: "versions.yml"
+authors:
+  - "@chriswyatt1"
+maintainers:
+  - "@chriswyatt1"
