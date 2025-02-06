@@ -23,18 +23,18 @@ input:
           e.g. `[ id:'sample1', suffix:'bacteria' ]`
     - reads:
         type: file
-        description: Input file in FASTA/FASTQ format.
+        description: Input RATTLE consensi FASTA/FASTQ format.
         pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
 output:
-  - clusters:
+  - results:
     - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', suffix:'bacteria' ]
-    - "clusters.out":
-          type: file
-          description: Output clusters in binary format.
+    - "${meta}.results.out":
+          type: directory
+          description: Output folder with results.
           pattern: "cluster.out"
   - versions:
       - versions.yml:
