@@ -11,7 +11,7 @@ process RATTLE_POLISH {
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${meta}.results.out"), emit: results
+    tuple val(meta), path("${meta.id}.transcriptome.fq"), emit: results
     path "versions.yml"                         , emit: versions
 
     when:
@@ -27,7 +27,8 @@ process RATTLE_POLISH {
         $args \\
         -t $task.cpus \\
         -i $reads
-        -o ${meta}\.results.out
+
+    mv transcriptome.fq ${meta.id}.transcriptome.fq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -38,8 +39,9 @@ process RATTLE_POLISH {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def RATTLE_VERSION = "v1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    mkdir ${meta}.results.out
+    touch ${meta.id}.transcriptome.fq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
