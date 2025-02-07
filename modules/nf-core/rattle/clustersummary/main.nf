@@ -12,7 +12,7 @@ process RATTLE_CLUSTERSUMMARY {
     tuple val(meta), path(clusters)
 
     output:
-    tuple val(meta), path("cluster_summary_${meta}.csv"), emit: summary
+    tuple val(meta), path("cluster_summary_${meta.id}.csv"), emit: summary
     path "versions.yml"                                 , emit: versions
 
     when:
@@ -24,11 +24,11 @@ process RATTLE_CLUSTERSUMMARY {
     def RATTLE_VERSION = "v1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     rattle \\
-        cluster_summary $args \\
-        -t $task.cpus \\
+        cluster_summary \\
+        $args \\
         -i $reads \\
         -c $clusters \\
-        > cluster_summary_${meta}.csv
+        > cluster_summary_${meta.id}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
@@ -39,8 +39,9 @@ process RATTLE_CLUSTERSUMMARY {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def RATTLE_VERSION = "v1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch cluster_summary_${meta}.csv
+    touch cluster_summary_${meta.id}.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
