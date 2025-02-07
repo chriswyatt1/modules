@@ -5,7 +5,7 @@ process RATTLE_CORRECT {
     if (params.enable_conda) {
         error "Conda environments are not set up for rattle (when this module was built). Please use docker or singularity containers."
     }
-    container 'ecoflowucl/rattle:v1.0'
+    container 'ecoflowucl/rattle:v1.1'
 
     input:
     tuple val(meta), path(reads)
@@ -26,9 +26,9 @@ process RATTLE_CORRECT {
     def RATTLE_VERSION = "v1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     rattle \\
-        correct $args \\
-        -t $task.cpus \\
+        correct \\
         -i $reads \\
+        -t $task.cpus \\
         -c $clusters
 
     cat <<-END_VERSIONS > versions.yml
@@ -42,7 +42,9 @@ process RATTLE_CORRECT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def RATTLE_VERSION = "v1.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    touch clusters.out
+    touch corrected.fq
+    touch uncorrected.fq
+    touch consensi.fq
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
