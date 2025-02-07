@@ -41,7 +41,7 @@ nextflow_process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+				    [ file('${projectDir}/sample.fastq', checkIfExists: true) ]
 				]
                 input[1] = [
 				    [ id:'test', single_end:false ], // meta map
