@@ -8,20 +8,30 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rattle"
     tag "rattle/clustersummary"
+    tag "rattle/cluster"
 
     test("test-rattle") {
+
+        setup {
+            run("RATTLE_CLUSTER") {
+                script "../../cluster/main.nf"
+            }
+            """
+            input[0] = [
+                [ id:'test', single_end:false ], // meta map
+                [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+            ]
+            """
+        }
 
         when {
             process {
                 """
                 input[0] = [
 				    [ id:'test', single_end:false ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+                    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
 				]
-                input[1] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [ file('${projectDir}/clusters.out', checkIfExists: true) ]
-				]
+                input[1] = RATTLE_CLUSTER.out.clusters
                 """
             }
         }
