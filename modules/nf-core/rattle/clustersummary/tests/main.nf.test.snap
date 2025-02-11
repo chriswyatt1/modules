@@ -1,5 +1,5 @@
 {
-    "test-rattle": {
+    "test-rattle-clustersummary": {
         "content": [
             {
                 "0": [
@@ -32,9 +32,9 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-07T09:21:03.215232063"
+        "timestamp": "2025-02-11T20:04:17.059056"
     },
-    "test-rattle-stub": {
+    "test-rattle-clustersummary-stub": {
         "content": [
             {
                 "0": [
@@ -67,6 +67,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.4"
         },
-        "timestamp": "2025-02-07T09:28:26.930647036"
+        "timestamp": "2025-02-11T20:04:24.600674"
     }
 }

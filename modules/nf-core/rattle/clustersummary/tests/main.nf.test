@@ -10,18 +10,20 @@ nextflow_process {
     tag "rattle/clustersummary"
     tag "rattle/cluster"
 
-    test("test-rattle") {
+    test("test-rattle-clustersummary") {
 
         setup {
             run("RATTLE_CLUSTER") {
                 script "../../cluster/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+                    ]
+                    """
+                }
             }
-            """
-            input[0] = [
-                [ id:'test', single_end:false ], // meta map
-                [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
-            ]
-            """
         }
 
         when {
@@ -44,19 +46,31 @@ nextflow_process {
         }
     }
 
-    test("test-rattle-stub") {
+    test("test-rattle-clustersummary-stub") {
         options '-stub'
+
+        setup {
+            run("RATTLE_CLUSTER") {
+                script "../../cluster/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+                    ]
+                    """
+                }
+            }
+        }
+        
         when {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
-				]
-                input[1] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [ file('${projectDir}/clusters.out', checkIfExists: true) ]
-				]
+                    [ id:'test', single_end:false ], // meta map
+                    [ file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/nanopore/fastq/test.fastq.gz', checkIfExists: true) ]
+                ]
+                input[1] = RATTLE_CLUSTER.out.clusters
                 """
             }
         }
