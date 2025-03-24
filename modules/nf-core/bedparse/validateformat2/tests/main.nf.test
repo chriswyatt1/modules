@@ -1,0 +1,60 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test bedparse/validateformat2
+nextflow_process {
+
+    name "Test Process BEDPARSE_VALIDATEFORMAT2"
+    script "../main.nf"
+    process "BEDPARSE_VALIDATEFORMAT2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bedparse"
+    tag "bedparse/validateformat2"
+
+    test("sarscov2 - bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
