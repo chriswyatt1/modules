@@ -18,21 +18,25 @@ nextflow_workflow {
 
         when {
 
-            process {
+            workflow {
                 """
-                // First tuple -> reads
+                // ch_reads must match workflow 'take' name
                 input[0] = [
-                    [ id: 'reads_tuple' ],
-                    [ [ [ sample_id: 'sars_illumina' ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true) ] ] ]
+                    [ id: 'ch_reads' ],
+                    [
+                        [ [ sample_id: 'sars_illumina' ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true) ] ]
+                    ]
                 ]
 
-                // Second tuple -> reference
+                // ch_ref must match workflow 'take' name
                 input[1] = [
-                    [ id: 'reference_tuple' ],
-                    [ [ [ sample_id: 'sars_genome' ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ] ] ]
+                    [ id: 'ch_ref' ],
+                    [
+                        [ [ sample_id: 'sars_genome' ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ] ]
+                    ]
                 ]
 
-                // Four scalar inputs expected by MINIMAP2_ALIGN (use the channel ids your workflow uses)
+                // Scalar inputs expected by MINIMAP2_ALIGN (plain vals)
                 input[2] = [ [ id: 'bam_format' ], false ]
                 input[3] = [ [ id: 'bam_index_extension' ], '' ]
                 input[4] = [ [ id: 'cigar_paf_format' ], false ]
