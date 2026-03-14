@@ -1,0 +1,56 @@
+# ...existing code...
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "syri_synteny"
+description: Runs the SYRI synteny program between two chromosome-level genomes
+keywords:
+  - synteny
+  - genomes
+  - fasta
+components:
+  - "syri"
+  - "nucmer"
+  - "minimap"
+  - "minimap/align"
+
+input:
+  - ch_reads:
+      description: "Channel of read genome tuples: [ val(meta), [ file(...) ] ]"
+  - ch_ref:
+      description: "Channel of reference genome tuples: [ val(meta), [ file(...) ] ]"
+  - bam_format:
+      type: boolean
+      description: "Specify that output should be in BAM format"
+      default: false
+  - bam_index_extension:
+      type: string
+      description: "BAM alignment index extension (e.g. 'bai')"
+      default: ""
+  - cigar_paf_format:
+      type: boolean
+      description: "Include CIGAR in PAF output"
+      default: false
+  - cigar_bam:
+      type: boolean
+      description: |
+        Write CIGAR with >65535 ops at the CG tag. This is recommended when
+        doing XYZ (https://github.com/lh3/minimap2#working-with-65535-cigar-operations)
+      default: false
+
+output:
+  - png:
+      type: file
+      description: |
+        Channel containing png plot files.
+        Structure: [ val(meta), path(png) ]
+      pattern: "*.png"
+  - versions:
+      type: file
+      description: |
+        File containing software versions
+        Structure: [ path(versions.yml) ]
+      pattern: "versions.yml"
+
+authors:
+  - "@chriswyatt1"
+maintainers:
+  - "@chriswyatt1"

@@ -1,0 +1,49 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core subworkflows test syri
+nextflow_workflow {
+
+    name "Test Subworkflow SYRI_SYNTENY"
+    script "../main.nf"
+    workflow "SYRI_SYNTENY"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/syri"
+    tag "syri"
+    tag "nucmer"
+    tag "minimap"
+    tag "minimap/align"
+
+    test("sarscov2 - scaffolds_fasta - genome_fasta") {
+
+        when {
+
+            process {
+                """
+                // First tuple -> reads
+                input[0] = [
+                    [ id: 'reads_tuple' ],
+                    [ [ [ sample_id: 'sars_illumina' ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true) ] ] ]
+                ]
+
+                // Second tuple -> reference
+                input[1] = [
+                    [ id: 'reference_tuple' ],
+                    [ [ [ sample_id: 'sars_genome' ], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ] ] ]
+                ]
+
+                // Four scalar inputs expected by MINIMAP2_ALIGN (use the channel ids your workflow uses)
+                input[2] = [ [ id: 'bam_format' ], false ]
+                input[3] = [ [ id: 'bam_index_extension' ], '' ]
+                input[4] = [ [ id: 'cigar_paf_format' ], false ]
+                input[5] = [ [ id: 'cigar_bam' ], false ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot( process.out.findAll { key, val -> key.startsWith('versions') } ).match()
+        }
+    }
+}
