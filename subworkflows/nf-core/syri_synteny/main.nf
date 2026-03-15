@@ -24,7 +24,35 @@ workflow SYRI_SYNTENY {
 
     SYRI   ( MINIMAP2_ALIGN.out.bam , ch_reads , ch_ref , 'B' )
 
-    PLOTSR ( SYRI.out.syri, GUNZIP_QUERY.out.gunzip, GUNZIP_REF.out.gunzip, [[], []], [[], []], [[], []], [[], []], [[], []] )
+    // Stage both FASTAs together and generate the genomes TSV
+    ch_fastas = GUNZIP_QUERY.out.gunzip
+        .combine(GUNZIP_REF.out.gunzip)
+        .map { meta1, fasta1, meta2, fasta2 ->
+            [
+                meta1,
+                [ fasta1, fasta2 ],                          // both FASTAs staged into work dir
+                "${fasta1.name}\t${meta1.id}\tlw:1.5\n${fasta2.name}\t${meta2.id}\tlw:1.5"
+            ]
+        }
+
+    ch_fastas_input  = ch_fastas.map { meta, fastas, tsv -> [ meta, fastas ] }
+    ch_genomes_tsv   = ch_fastas.map { meta, fastas, tsv ->
+        def tsv_file = file("${workDir}/genomes_${meta.id}.txt")
+        tsv_file.text = tsv
+        [ meta, tsv_file ]
+    }
+
+    PLOTSR (
+        SYRI.out.syri,
+        ch_fastas_input,
+        ch_genomes_tsv,
+        [ [], [] ],
+        [ [], [] ],
+        [ [], [] ],
+        [ [], [] ],
+        [ [], [] ]
+    )
+
 
     emit:
     png        = PLOTSR.out.png                  // channel: [ val(meta), [ png ] ]
