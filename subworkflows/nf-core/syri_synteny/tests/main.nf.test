@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test Subworkflow SYRI_SYNTENY"
     script "../main.nf"
     workflow "SYRI_SYNTENY"
+    config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
