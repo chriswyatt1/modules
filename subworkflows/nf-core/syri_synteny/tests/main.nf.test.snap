@@ -1,0 +1,19 @@
+{
+    "sarscov2 - scaffolds_fasta - genome_fasta": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "png": [
+                    
+                ]
+            }
+        ],
+        "timestamp": "2026-03-15T08:23:17.111211136",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    }
+}

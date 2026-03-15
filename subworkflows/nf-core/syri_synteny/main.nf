@@ -1,5 +1,6 @@
-// TODO nf-core: If in doubt look at other nf-core/subworkflows to see how we are doing things! :)
-//               https://github.com/nf-core/modules/tree/master/subworkflows
+//
+// Perform a basic synteny analysis with two chromosome level genomes
+//
 
 include { SYRI               } from '../../../modules/nf-core/syri/main'
 include { MINIMAP2_ALIGN     } from '../../../modules/nf-core/minimap2/align/main'
@@ -14,7 +15,7 @@ workflow SYRI_SYNTENY {
 
     main:
 
-    MINIMAP2_ALIGN ( ch_reads , ch_ref , [] , [], [], [] )
+    MINIMAP2_ALIGN ( ch_reads , ch_ref , true, 'bai', [], [] )
 
     SYRI  ( MINIMAP2_ALIGN.out.bam , ch_reads , ch_ref , 'B' )
 
