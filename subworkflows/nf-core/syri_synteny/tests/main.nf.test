@@ -17,13 +17,12 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = [
-                    [ id:'test_query' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true, stageAs: 'query.fasta')
+                    [ id:'ecoli_k12' ],
+                    file('https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz', checkIfExists: true)
                 ]
-
                 input[1] = [
-                    [ id:'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'ecoli_o157' ],
+                    file('https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/865/GCF_000008865.2_ASM886v2/GCF_000008865.2_ASM886v2_genomic.fna.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -44,13 +43,12 @@ nextflow_workflow {
             workflow {
                 """
                 input[0] = [
-                    [ id:'test_query' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true, stageAs: 'query.fasta')
+                    [ id:'ecoli_k12' ],
+                    file('https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz', checkIfExists: true)
                 ]
-
                 input[1] = [
-                    [ id:'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    [ id:'ecoli_o157' ],
+                    file('https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/008/865/GCF_000008865.2_ASM886v2/GCF_000008865.2_ASM886v2_genomic.fna.gz', checkIfExists: true)
                 ]
                 """
             }
