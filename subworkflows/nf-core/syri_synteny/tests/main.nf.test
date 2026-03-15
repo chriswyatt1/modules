@@ -18,7 +18,7 @@ nextflow_workflow {
                 """
                 input[0] = [
                     [ id:'test_query' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true, stageAs: 'query.fasta')
                 ]
 
                 input[1] = [
