@@ -11,7 +11,7 @@ nextflow_workflow {
     tag "minimap2/align"
     tag "plotsr"
 
-    test("sarscov2 - scaffolds_fasta - genome_fasta") {
+    test("sarscov2 - genome_fasta vs genome_fasta") {
 
         when {
             workflow {
@@ -36,7 +36,7 @@ nextflow_workflow {
     }
 
 
-    test("sarscov2 - scaffolds_fasta - genome_fasta - stub") {
+    test("sarscov2 - genome_fasta vs genome_fasta stub") {
 
         options "-stub"
 
