@@ -36,10 +36,12 @@ workflow SYRI_SYNTENY {
         }
 
     ch_fastas_input  = ch_fastas.map { meta, fastas, tsv -> [ meta, fastas ] }
-    ch_genomes_tsv   = ch_fastas.map { meta, fastas, tsv ->
-        def tsv_file = file("${workDir}/genomes_${meta.id}.txt")
-        tsv_file.text = tsv
-        [ meta, tsv_file ]
+    ch_genomes_tsv = GUNZIP_QUERY.out.gunzip
+        .combine(GUNZIP_REF.out.gunzip)
+        .map { meta1, fasta1, meta2, fasta2 ->
+            def tsv = file("${workDir}/genomes_${meta1.id}.txt")
+            tsv.text = "#file\tname\n${fasta1.name}\t${meta1.id}\n${fasta2.name}\t${meta2.id}\n"
+            [ meta1, tsv ]
     }
 
     PLOTSR (
