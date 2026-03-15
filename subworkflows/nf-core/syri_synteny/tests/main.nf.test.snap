@@ -16,6 +16,33 @@
             "nextflow": "25.10.4"
         }
     },
+    "sarscov2 - genome_fasta vs genome_fasta stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "ecoli_k12"
+                        },
+                        "ecoli_k12.png:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "png": [
+                    [
+                        {
+                            "id": "ecoli_k12"
+                        },
+                        "ecoli_k12.png:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-03-15T17:56:02.022238043",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
+    },
     "sarscov2 - scaffolds_fasta - genome_fasta": {
         "content": [
             {
