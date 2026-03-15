@@ -19,7 +19,7 @@ workflow SYRI_SYNTENY {
 
     SYRI  ( MINIMAP2_ALIGN.out.bam , ch_reads , ch_ref , 'B' )
 
-    PLOTSR ( SYRI.out.syri , ch_reads , ch_ref , [], [] , [], [], [] )
+    PLOTSR ( SYRI.out.syri , ch_reads , ch_ref , [ [], [] ], [ [], [] ], [ [], [] ], [ [], [] ], [ [], [] ] )
 
     emit:
     png        = PLOTSR.out.png                  // channel: [ val(meta), [ png ] ]
