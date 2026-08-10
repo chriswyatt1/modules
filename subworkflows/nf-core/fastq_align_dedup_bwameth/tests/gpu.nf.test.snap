@@ -2,62 +2,82 @@
     "Params: parabricks/fq2bammeth single-end | use_gpu": {
         "content": [
             [
-                
+                "a7f7ca7b5eb503ab58790d64a0273ed6"
             ],
             [
-                
+                "test.sorted.md.bam.bai"
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.flagstat:md5,897d500a710a56a7098172167fa71108"
+                ]
             ],
             [
-                
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.stats:md5,7557d74f318914a3887f1957c435ed72"
+                ]
             ],
             [
-                
+                "test.sorted.md.metrics.txt"
             ],
             [
-                
-            ],
-            [
-                
+                "test.flagstat",
+                "test.sorted.md.metrics.txt",
+                "test.stats"
             ]
         ],
-        "timestamp": "2026-03-12T15:33:50.42679367",
+        "timestamp": "2026-07-10T06:38:27.217539723",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-12T13:44:47.314782"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.2"
+        }
     },
     "Params: parabricks/fq2bammeth single-end | use_gpu | skip_deduplication": {
         "content": [
             [
-                
+                "a7f7ca7b5eb503ab58790d64a0273ed6"
+            ],
+            [
+                "test.sorted.bam.bai"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.flagstat:md5,897d500a710a56a7098172167fa71108"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.stats:md5,7557d74f318914a3887f1957c435ed72"
+                ]
             ],
             [
                 
             ],
             [
-                
-            ],
-            [
-                
-            ],
-            [
-                
-            ],
-            [
-                
-            ],
-            [
-                
+                "test.flagstat",
+                "test.stats"
             ]
         ],
+        "timestamp": "2026-07-10T06:39:40.143935271",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-12T13:45:08.752065"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.2"
+        }
     }
 }

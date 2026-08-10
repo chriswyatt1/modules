@@ -4,28 +4,28 @@
 // use the mapped information to group UMIs and generate consensus reads
 //
 
-include { BWA_INDEX as BWAMEM1_INDEX                            } from '../../../modules/nf-core/bwa/index/main.nf'
-include { BWA_MEM as BWAMEM1_MEM_PRE                            } from '../../../modules/nf-core/bwa/mem/main.nf'
-include { BWA_MEM as BWAMEM1_MEM_POST                           } from '../../../modules/nf-core/bwa/mem/main.nf'
-include { BWAMEM2_INDEX                                         } from '../../../modules/nf-core/bwamem2/index/main.nf'
-include { BWAMEM2_MEM as BWAMEM2_MEM_PRE                        } from '../../../modules/nf-core/bwamem2/mem/main.nf'
-include { BWAMEM2_MEM as BWAMEM2_MEM_POST                       } from '../../../modules/nf-core/bwamem2/mem/main.nf'
-include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS } from '../../../modules/nf-core/fgbio/callmolecularconsensusreads/main.nf'
-include { FGBIO_CALLDUPLEXCONSENSUSREADS as CALLDUPLEXCONSENSUS } from '../../../modules/nf-core/fgbio/callduplexconsensusreads/main.nf'
-include { FGBIO_FASTQTOBAM as FASTQTOBAM                        } from '../../../modules/nf-core/fgbio/fastqtobam/main.nf'
-include { FGBIO_FILTERCONSENSUSREADS as FILTERCONSENSUS         } from '../../../modules/nf-core/fgbio/filterconsensusreads/main.nf'
-include { FGBIO_GROUPREADSBYUMI as GROUPREADSBYUMI              } from '../../../modules/nf-core/fgbio/groupreadsbyumi/main.nf'
-include { FGBIO_ZIPPERBAMS as ZIPPERBAMS_PRE                    } from '../../../modules/nf-core/fgbio/zipperbams/main.nf'
-include { FGBIO_ZIPPERBAMS as ZIPPERBAMS_POST                   } from '../../../modules/nf-core/fgbio/zipperbams/main.nf'
-include { SAMTOOLS_FASTQ as BAM2FASTQ_PRE                       } from '../../../modules/nf-core/samtools/fastq/main.nf'
-include { SAMTOOLS_FASTQ as BAM2FASTQ_POST                      } from '../../../modules/nf-core/samtools/fastq/main.nf'
-include { SAMTOOLS_SORT as SORTBAM                              } from '../../../modules/nf-core/samtools/sort/main.nf'
+include { BWAMEM2_INDEX                                         } from '../../../modules/nf-core/bwamem2/index'
+include { BWAMEM2_MEM as BWAMEM2_MEM_POST                       } from '../../../modules/nf-core/bwamem2/mem'
+include { BWAMEM2_MEM as BWAMEM2_MEM_PRE                        } from '../../../modules/nf-core/bwamem2/mem'
+include { BWA_INDEX as BWAMEM1_INDEX                            } from '../../../modules/nf-core/bwa/index'
+include { BWA_MEM as BWAMEM1_MEM_POST                           } from '../../../modules/nf-core/bwa/mem'
+include { BWA_MEM as BWAMEM1_MEM_PRE                            } from '../../../modules/nf-core/bwa/mem'
+include { FGBIO_CALLDUPLEXCONSENSUSREADS as CALLDUPLEXCONSENSUS } from '../../../modules/nf-core/fgbio/callduplexconsensusreads'
+include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS } from '../../../modules/nf-core/fgbio/callmolecularconsensusreads'
+include { FGBIO_FASTQTOBAM as FASTQTOBAM                        } from '../../../modules/nf-core/fgbio/fastqtobam'
+include { FGBIO_FILTERCONSENSUSREADS as FILTERCONSENSUS         } from '../../../modules/nf-core/fgbio/filterconsensusreads'
+include { FGBIO_GROUPREADSBYUMI as GROUPREADSBYUMI              } from '../../../modules/nf-core/fgbio/groupreadsbyumi'
+include { FGBIO_ZIPPERBAMS as ZIPPERBAMS_POST                   } from '../../../modules/nf-core/fgbio/zipperbams'
+include { FGBIO_ZIPPERBAMS as ZIPPERBAMS_PRE                    } from '../../../modules/nf-core/fgbio/zipperbams'
+include { SAMTOOLS_FASTQ as BAM2FASTQ_POST                      } from '../../../modules/nf-core/samtools/fastq'
+include { SAMTOOLS_FASTQ as BAM2FASTQ_PRE                       } from '../../../modules/nf-core/samtools/fastq'
+include { SAMTOOLS_SORT as SORTBAM                              } from '../../../modules/nf-core/samtools/sort'
+
 workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     take:
     reads // channel: [mandatory] [ val(meta), [ reads ] ]
-    fasta_fai // channel: [mandatory] [ val(meta), /path/to/reference/fasta, /path/to/reference/fasta.fai ]
+    fasta_fai_dict // channel: [mandatory] [ val(meta), /path/to/reference/fasta, /path/to/reference/fasta.fai, /path/to/reference/dictionary ]
     bwa_index // channel: [optional]  [ val(meta), /path/to/reference/bwaindex ]
-    dict // channel: [mandatory] [ val(meta), /path/to/reference/dictionary ]
     groupreadsbyumi_strategy // string:  [mandatory] grouping strategy - default: "Adjacency"
     aligner // string:  [mandatory] "bwa-mem" or "bwa-mem2"
     duplex // bool:    [mandatory] true or false depending on UMI structure
@@ -51,10 +51,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // the user can choose here to use either bwa-mem (default) or bwa-mem2
     aligned_bam = channel.empty()
 
+    fasta = fasta_fai_dict.map { it -> tuple(it[0], it[1]) }
+    fasta_fai = fasta_fai_dict.map { it -> tuple(it[0], it[1], it[2]) }
+
     if (aligner == "bwa-mem") {
 
         if (!bwa_index) {
-            BWAMEM1_INDEX(fasta_fai)
+            BWAMEM1_INDEX(fasta)
         }
 
         // sets bwaindex to correct input
@@ -62,13 +65,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
-        BWAMEM1_MEM_PRE(BAM2FASTQ_PRE.out.fastq, bwaindex, fasta_fai, false)
+        BWAMEM1_MEM_PRE(BAM2FASTQ_PRE.out.fastq, bwaindex, fasta, false)
         aligned_bam = aligned_bam.mix(BWAMEM1_MEM_PRE.out.bam)
     }
     else {
 
         if (!bwa_index) {
-            BWAMEM2_INDEX(fasta_fai)
+            BWAMEM2_INDEX(fasta)
         }
 
         // sets bwaindex to correct input
@@ -76,13 +79,13 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         // appropriately tagged interleaved FASTQ reads are mapped to the reference
         // the aligner should be set with the following parameters "-p -K 150000000 -Y"
         // to be configured in ext.args of your config
-        BWAMEM2_MEM_PRE(BAM2FASTQ_PRE.out.fastq, bwaindex, fasta_fai, false)
+        BWAMEM2_MEM_PRE(BAM2FASTQ_PRE.out.fastq, bwaindex, fasta, false)
         aligned_bam = BWAMEM2_MEM_PRE.out.bam
     }
 
     // in order to tag mates information in the BAM file
     // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
-    ZIPPERBAMS_PRE(FASTQTOBAM.out.bam, aligned_bam, fasta_fai, dict)
+    ZIPPERBAMS_PRE(aligned_bam.join(FASTQTOBAM.out.bam), fasta_fai_dict)
 
     // appropriately tagged reads are now grouped by UMI information
     // note that in tests ext.args has been set to recommended --edits 1
@@ -109,7 +112,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
         consensus_bam = CALLUMICONSENSUS.out.bam
     }
 
-    FILTERCONSENSUS(consensus_bam, fasta_fai, min_reads, min_baseq, max_base_error_rate)
+    FILTERCONSENSUS(consensus_bam, fasta_fai_dict, min_reads, min_baseq, max_base_error_rate)
 
     // now the consensus uBAM needs to be converted into FASTQ again
     // to be aligned
@@ -117,18 +120,18 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
 
     if (aligner == "bwa-mem") {
         // index made available through previous steps
-        BWAMEM1_MEM_POST(BAM2FASTQ_POST.out.fastq, bwaindex, fasta_fai, false)
+        BWAMEM1_MEM_POST(BAM2FASTQ_POST.out.fastq, bwaindex, fasta, false)
         aligned_bam_post = BWAMEM1_MEM_POST.out.bam
     }
     else {
         // index made available through previous steps
-        BWAMEM2_MEM_POST(BAM2FASTQ_POST.out.fastq, bwaindex, fasta_fai, false)
+        BWAMEM2_MEM_POST(BAM2FASTQ_POST.out.fastq, bwaindex, fasta, false)
         aligned_bam_post = BWAMEM2_MEM_POST.out.bam
     }
 
     // in order to tag mates information in the BAM file
     // FGBIO tool ZipperBams is used to merge info from mapped and unmapped BAM files
-    ZIPPERBAMS_POST(consensus_bam, aligned_bam_post, fasta_fai, dict)
+    ZIPPERBAMS_POST(aligned_bam_post.join(consensus_bam), fasta_fai_dict)
     // FGBIO versions are emitted via topic channels
 
     // finally sort bam file

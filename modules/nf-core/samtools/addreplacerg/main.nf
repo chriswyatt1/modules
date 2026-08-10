@@ -3,9 +3,9 @@ process SAMTOOLS_ADDREPLACERG {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e5598451c6d348cce36191bafe1911ad71e440137d7a329da946f2b0dbb0e7f3/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.23--cde2c40a51d6f752'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e994bf4eb3731150511a14f5706b7bdfd64df1b6d40898fff334286c027e0859/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.24--d697cfb9dce007cd'}"
 
     input:
     tuple val(meta), path(input), path(index), val(read_group)
@@ -15,9 +15,7 @@ process SAMTOOLS_ADDREPLACERG {
     tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
     tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
     tuple val(meta), path("${prefix}.sam"), emit: sam, optional: true
-    tuple val(meta), path("${prefix}.bam.bai"), emit: bai, optional: true
-    tuple val(meta), path("${prefix}.bam.csi"), emit: csi, optional: true
-    tuple val(meta), path("${prefix}.cram.crai"), emit: crai, optional: true
+    tuple val(meta), path("${prefix}.${file_type}.{crai,csi,bai}"), emit: index, optional: true
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
@@ -27,7 +25,7 @@ process SAMTOOLS_ADDREPLACERG {
     def args = task.ext.args ?: ''
     def reference = fasta ? "--reference ${fasta}" : ''
     def read_group_arg = read_group ? "-r ${read_group}" : ''
-    def file_type = args =~ /--output-fmt\s+sam|-O\s+sam/
+    file_type = args =~ /--output-fmt\s+sam|-O\s+sam/
         ? "sam"
         : args =~ /--output-fmt\s+bam|-O\s+bam/
             ? "bam"

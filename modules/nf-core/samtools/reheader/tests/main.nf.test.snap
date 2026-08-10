@@ -2,62 +2,32 @@
     "homo_sapiens - chrdel": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_reheaded.bam:md5,0c5436974ec6b504219da1f26a8788c3"
-                    ]
-                ],
-                "1": [
-                    [
-                        "SAMTOOLS_REHEADER",
-                        "samtools",
-                        "1.23"
-                    ]
-                ],
                 "bam": [
                     [
                         {
                             "id": "test"
                         },
-                        "test_reheaded.bam:md5,0c5436974ec6b504219da1f26a8788c3"
+                        "test_reheaded.bam:md5,18236b6a74a282122a4bf5857fdab28e"
                     ]
                 ],
                 "versions_samtools": [
                     [
                         "SAMTOOLS_REHEADER",
                         "samtools",
-                        "1.23"
+                        "1.24"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-07-10T16:08:26.661899065",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-12T14:38:06.71878"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_reheaded.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        "SAMTOOLS_REHEADER",
-                        "samtools",
-                        "1.23"
-                    ]
-                ],
                 "bam": [
                     [
                         {
@@ -70,56 +40,41 @@
                     [
                         "SAMTOOLS_REHEADER",
                         "samtools",
-                        "1.23"
+                        "1.24"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-07-10T16:08:36.271906321",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-03T17:09:21.267386117"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - rgdel": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_reheaded.bam:md5,44f53924708f994c5c3cc70c5ed2d902"
-                    ]
-                ],
-                "1": [
-                    [
-                        "SAMTOOLS_REHEADER",
-                        "samtools",
-                        "1.23"
-                    ]
-                ],
                 "bam": [
                     [
                         {
                             "id": "test"
                         },
-                        "test_reheaded.bam:md5,44f53924708f994c5c3cc70c5ed2d902"
+                        "test_reheaded.bam:md5,cef75ebdb6998a789434db797371514c"
                     ]
                 ],
                 "versions_samtools": [
                     [
                         "SAMTOOLS_REHEADER",
                         "samtools",
-                        "1.23"
+                        "1.24"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-07-10T16:08:31.309090187",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-12T14:38:13.401816"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     }
 }
